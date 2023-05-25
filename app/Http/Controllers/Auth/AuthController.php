@@ -12,7 +12,7 @@ class AuthController extends Controller
     public function generateToken(Request $request)
     {
         $request->validate([
-            'username' => 'required|string',
+            'username' => 'required|string|min:2',
             'password' => 'required',
         ]);
 
@@ -33,7 +33,7 @@ class AuthController extends Controller
     public function registerAndGenerateToken(Request $request)
     {
         $request->validate([
-            'username' => 'required|string|max:255|unique:'.User::class,
+            'username' => 'required|string|min:2|max:255|unique:'.User::class,
             'password' => 'required',
         ]);
 
