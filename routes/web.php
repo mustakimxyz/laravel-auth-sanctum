@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\UserController;
+use Symfony\Component\HttpFoundation\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +18,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::prefix('auth')->group(function () {
+    Route::post('/login',  [AuthController::class, 'generateToken']);
+    Route::post('/register', [AuthController::class, 'registerAndGenerateToken']);
+});
+
+Route::prefix('user')->middleware('auth:sanctum')->group(function () {
+    Route::middleware('auth:sanctum')->get('/profile', function (Request $request) {
+        return $request->user();
+    });
+    Route::get('/list',  [UserController::class, 'index']);
 });
